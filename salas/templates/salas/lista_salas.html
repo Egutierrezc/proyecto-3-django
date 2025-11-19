@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>ITID - Salas de Estudio</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .sala-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .disponible { background-color: #e6ffe6; border-left: 5px solid green; }
+        .reservada { background-color: #ffe6e6; border-left: 5px solid red; }
+        .deshabilitada { background-color: #f0f0f0; border-left: 5px solid gray; }
+        h2 a { text-decoration: none; color: #333; }
+        .estado { font-weight: bold; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <h1>📚 Gestión de Salas ITID</h1>
+    
+    {% for sala in salas %}
+    <div class="sala-item {% if sala.habilitada %} {% if sala.esta_reservada %}reservada{% else %}disponible{% endif %} {% else %}deshabilitada{% endif %}">
+        
+        <h2><a href="{% url 'detalle_sala' sala.id %}">{{ sala.nombre }}</a></h2>
+        <p>Capacidad: {{ sala.capacidad_maxima }} personas</p>
+        
+        {% if sala.habilitada %}
+            {% if sala.esta_reservada %}
+                <p class="estado" style="color: red;">❌ ESTADO: Reservada</p>
+                <p><small>Haz clic para ver la hora de término.</small></p>
+            {% else %}
+                <p class="estado" style="color: green;">✅ ESTADO: Disponible</p>
+                <p><a href="{% url 'detalle_sala' sala.id %}">Reservar esta Sala</a></p>
+            {% endif %}
+        {% else %}
+            <p class="estado" style="color: gray;">🟡 ESTADO: Fuera de Servicio</p>
+        {% endif %}
+    </div>
+    {% empty %}
+    <p>No hay salas habilitadas para mostrar en este momento.</p>
+    {% endfor %}
+</body>
+</html>

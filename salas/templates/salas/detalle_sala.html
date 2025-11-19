@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de {{ sala.nombre }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .reserva-box { border: 2px dashed red; padding: 20px; background-color: #fff0f0; margin-top: 20px; }
+        .reserva-form { border: 1px solid green; padding: 20px; background-color: #f0fff0; margin-top: 20px; }
+        .info { margin-bottom: 10px; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <p><a href="{% url 'lista_salas' %}">⬅️ Volver a la Lista de Salas</a></p>
+    
+    <h1>Sala: {{ sala.nombre }}</h1>
+    <div class="info">
+        <p>Capacidad Máxima: <strong>{{ sala.capacidad_maxima }} personas</strong></p>
+    </div>
+    <hr>
+
+    {% if reserva_actual %}
+        <div class="reserva-box">
+            <h2>🛑 Sala Actualmente Reservada</h2>
+            <p style="color: red;">La sala estará ocupada hasta que expire el plazo.</p>
+            
+            <h3>Detalles de la Reserva Activa:</h3>
+            <p>Hora de Inicio: <strong>{{ reserva_actual.fecha_hora_inicio|date:"d M Y H:i" }}</strong></p>
+            <p>Hora de Término: <strong>{{ reserva_actual.fecha_hora_termino|date:"d M Y H:i" }}</strong></p>
+        </div>
+        
+    {% elif not sala.habilitada %}
+        <h2>⚠️ Sala Deshabilitada</h2>
+        <p>Esta sala no está disponible para reservas en este momento.</p>
+        
+    {% else %}
+        <div class="reserva-form">
+            <h2>✅ Sala Disponible: Realizar Reserva</h2>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                {{ form.as_p }}
+                
+                <p style="font-style: italic; color: #555;">La reserva se iniciará ahora y durará 2 horas (tiempo máximo).</p>
+                <button type="submit">Confirmar Reserva</button>
+            </form>
+        </div>
+        
+    {% endif %}
+</body>
+</html>
