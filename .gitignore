@@ -1,0 +1,28 @@
+# Python / Entorno Virtual
+##########################
+# Ignora la carpeta del entorno virtual que contiene todas las librerías
+venv/
+__pycache__/
+*.pyc
+*.pyd
+*.so
+
+# Django
+#########
+# Ignora el archivo SQLite 
+db.sqlite3
+# Ignora todos los archivos de logs
+*.log
+
+# Variables de Entorno y Seguridad
+##################################
+.env
+
+# Archivos de Sistema Operativo
+###############################
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
